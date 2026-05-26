@@ -1,10 +1,24 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
+import { useRouter } from "expo-router";
 import { MotiImage, MotiText } from "moti";
 import { Text, TouchableOpacity, View } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { SafeAreaView } from "react-native-safe-area-context";
+
 export default function page() {
+
+  const setData= async()=>{
+     try {
+         await AsyncStorage.setItem('welcome',"true");
+         router.replace("/home");
+      } catch (e) {
+          console.log("Error saving AsyncStorage", e);
+      }
+  }
+
+  const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       <View className="flex-1 items-center gap-4 justify-center">
@@ -55,12 +69,12 @@ export default function page() {
           }}
 
           className="text-2xl text-gray-500 font-semibold">Your Super Productivity To-Do App</MotiText>
-         
-              <TouchableOpacity onPress={()=>{Haptics.selectionAsync()}} className="mt-30 flex items-center justify-center h-17 w-72 bg-[#191B1C] rounded-4xl">
+
+        <TouchableOpacity onPress={async () => {await Haptics.selectionAsync(); await setData(); }} className="mt-30 flex items-center justify-center h-17 w-72 bg-[#191B1C] rounded-4xl">
           <Text className="font-semibold text-center text-white text-2xl">Next</Text>
         </TouchableOpacity>
 
-      
+
       </View>
     </SafeAreaView>
   )

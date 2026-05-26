@@ -1,39 +1,41 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Redirect } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
 
-  const [is, isnot] = useState(null);
+  const [is, setis] = useState(null);
+  const [load,setload]=useState(true);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const value = await AsyncStorage.getItem('welcome');
         if (value !== null) {
-        is=value;
+          setis(value);
         }
       } catch (e) {
-        // error reading value
+        console.log(e);
+      }finally{
+        setload(false);
       }
     };
+
+    getData();
   }, [])
 
-  if(!is){
-    return <Redirect href="/welcome" />;
 
+  // Wait until storage check finishes
+  if (load) {
+    return null;
+  }
+
+  if (!is) {
+    return <Redirect href="/welcome" />;
   }
 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-      <View className="flex-1 items-center justify-center bg-black">
-        <Text className="text-red-700 text-5xl">
-          Hello World !!
-        </Text>
-      </View>
-    </SafeAreaView>
+    <Redirect href="/home" />
   );
 }
