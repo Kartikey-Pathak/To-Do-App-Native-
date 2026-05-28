@@ -54,7 +54,7 @@ export default function page() {
                     transition={{
                         type: "timing",
                         duration: 1000,
-                    }} className=" text-white text-center text-4xl font-bold">Today's Task</MotiText>
+                    }} className=" text-white text-center text-4xl font-bold">Today's Tasks</MotiText>
 
 
 
@@ -97,7 +97,7 @@ export default function page() {
                    
                    <View className="w-full mt-10 flex items-center flex-row justify-between">
                    <Text className=" text-2xl ml-5 text-[#495057] font-bold ">Tasks: </Text>
-                   <TouchableOpacity onPress={async() => { await Haptics.selectionAsync();  }} className=" mr-5"><Ionicons className=" text-white" size={42} name='add-circle-sharp' /></TouchableOpacity>
+                   <TouchableOpacity onPress={async() => { await Haptics.selectionAsync(); settasks(...tasks,tasks.push({title:"Add Title",status:"Progress",time:})) }} className=" mr-5"><Ionicons className=" text-white" size={42} name='add-circle-sharp' /></TouchableOpacity>
                    </View>
 
             </View>
