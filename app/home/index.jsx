@@ -3,11 +3,12 @@ import { GlassView } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import { MotiText } from "moti";
 import { useEffect, useMemo, useState } from 'react';
-import { FlatList, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 export default function page() {
     const [notify, setnotify] = useState(true);
     const [activedate, setactivedate] = useState(new Date());
     const [tasks, settasks] = useState([]);
+    const [texts,settexts] =useState("");
 
 
     useEffect(() => {
@@ -124,7 +125,15 @@ export default function page() {
                         renderItem={({ item }) => {
                             
                             return (
-                                <GlassView style={{ height: 190, width: 350, borderRadius: 40 }} ></GlassView>
+                                <GlassView style={{ height: 190, width: 350, borderRadius: 40 }} >
+                                    <View className="h-full w-full flex flex-col p-10">
+                                        <TextInput
+                                        onChange={(e)=>{settexts(e.target.value)}}
+                                        value={texts}
+                                        />
+                                    <Text className=" font-semibold text-white text-3xl">{item.title}</Text>
+                                    </View>
+                                </GlassView>
                             )
                             
                         }}

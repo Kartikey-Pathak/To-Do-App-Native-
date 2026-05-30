@@ -70,9 +70,22 @@ export default function page() {
 
           className="text-2xl text-gray-500 font-semibold">Your Super Productivity To-Do App</MotiText>
 
-        <TouchableOpacity onPress={async () => {await Haptics.selectionAsync(); await setData(); }} className="mt-30 flex items-center justify-center h-17 w-72 bg-[#191B1C] rounded-4xl">
+        <MotiText
+        className="m-20"
+          from={{
+            opacity: 0,
+            translateY: 40,
+          }}
+          animate={{
+            opacity: 1,
+            translateY: 0,
+          }}
+          transition={{
+            type: "timing",
+            duration: 1000,
+          }}><TouchableOpacity onPress={async () => {await Haptics.selectionAsync(); await setData(); }} className="mt-30 flex items-center justify-center h-17 w-72 bg-[#191B1C] rounded-4xl">
           <Text className="font-semibold text-center text-white text-2xl">Next</Text>
-        </TouchableOpacity>
+        </TouchableOpacity></MotiText>
 
 
       </View>
