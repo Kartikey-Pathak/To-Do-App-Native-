@@ -128,8 +128,15 @@ export default function page() {
                                 <GlassView style={{ height: 190, width: 350, borderRadius: 40 }} >
                                     <View className="h-full w-full flex flex-col p-10">
                                         <TextInput
-                                        onChange={(e)=>{settexts(e.target.value)}}
-                                        value={texts}
+                                        onChangeText={(text)=>{
+                                            settexts(prev=>{
+                                                prev.map(task=>
+                                                    task.id===item.id?{ ...task, title: text }:task
+                                                )
+                                            })
+                                            
+                                        }}
+                                        value={item.title}
                                         />
                                     <Text className=" font-semibold text-white text-3xl">{item.title}</Text>
                                     </View>
