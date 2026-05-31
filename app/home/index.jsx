@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { GlassView } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
-import { MotiText } from "moti";
+import { MotiText, MotiView } from "moti";
 import { useEffect, useMemo, useState } from 'react';
 import { FlatList, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 export default function page() {
     const [notify, setnotify] = useState(true);
     const [activedate, setactivedate] = useState(new Date());
     const [tasks, settasks] = useState([]);
-    const [texts,settexts] =useState("");
+    const [texts, settexts] = useState("");
 
 
     useEffect(() => {
@@ -112,45 +112,71 @@ export default function page() {
 
             </View>
 
-                {Platform.OS === "ios" ?
+            {Platform.OS === "ios" ?
 
-                    <FlatList
-                    
-                        data={tasks}
-                        vertical
-                        keyExtractor={item => item.id}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{ paddingVertical: 20,gap:50,alignItems:"center" }}
+                <FlatList
 
-                        renderItem={({ item }) => {
-                            
-                            return (
-                                <GlassView style={{ height: 190, width: 350, borderRadius: 40 }} >
+                    data={tasks}
+                    vertical
+                    keyExtractor={item => item.id}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingVertical: 20, gap: 50, alignItems: "center" }}
+
+                    renderItem={({ item }) => {
+
+                        return (
+
+                            <MotiView
+                                from={{
+                                    opacity: 0,
+                                     translateY: 30,
+
+                                }}
+                                animate={{
+                                    opacity: 1,
+                                    translateY: 0,
+                                }}
+                                transition={{
+                                    type: "timing",
+                                    duration: 250,
+                                }}
+                            >
+                                <GlassView style={{ height: 190, width: 350, borderRadius: 40, display: 'flex', flexDirection: 'column' }} >
                                     <View className="h-full w-full flex flex-col p-10">
                                         <TextInput
-                                        onChangeText={(text)=>{
-                                            settexts(prev=>{
-                                                prev.map(task=>
-                                                    task.id===item.id?{ ...task, title: text }:task
+                                            className="w-full h-28 font-semibold text-white text-3xl"
+                                            multiline={true}
+
+                                            onChangeText={(text) => {
+                                                settasks(prev =>
+                                                    prev.map(task =>
+                                                        task.id === item.id ? { ...task, title: text } : task
+                                                    )
                                                 )
-                                            })
-                                            
-                                        }}
-                                        value={item.title}
+
+                                            }}
+                                            value={item.title}
                                         />
-                                    <Text className=" font-semibold text-white text-3xl">{item.title}</Text>
+                                        <TouchableOpacity onPress={() => {
+                                            Haptics.selectionAsync(); settasks(prev =>
+                                                prev.filter(task => task.id !== item.id)
+                                            );
+                                        }}>
+                                            <Ionicons size={40} name='remove-circle-outline' className="text-red-600" />
+                                        </TouchableOpacity>
+                                        {/* <Text className=" font-semibold text-white text-3xl">{item.title}</Text> */}
                                     </View>
-                                </GlassView>
-                            )
-                            
-                        }}
-                    />
+                                </GlassView></MotiView>
+                        )
 
-                    : <View className="h-48 w-80 bg-gray-500"></View>
+                    }}
+                />
 
-                }
+                : <View className="h-48 w-80 bg-gray-500"></View>
 
-            
+            }
+
+
 
 
 
