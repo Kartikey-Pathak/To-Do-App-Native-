@@ -304,8 +304,8 @@ export default function page() {
                                 }}
 
                             >
-                                <GlassView style={{ height: 190, width: 350, marginTop: 20, borderRadius: 40, display: 'flex', flexDirection: 'column' }} >
-                                    <View className="h-full w-full flex flex-col p-10">
+                                <View className="h-[190px] w-[350px] mt-5 rounded-4xl flex flex-col bg-[#393E46]/30 backdrop-blur-3xl "  >
+                                    <View className="h-full w-full flex flex-col px-10 py-5">
                                         <TextInput
                                             className="w-full h-28 font-semibold text-white text-3xl"
                                             multiline={true}
@@ -363,7 +363,7 @@ export default function page() {
                                         </View>
 
                                     </View>
-                                </GlassView></MotiView>
+                                </View></MotiView>
                         )
 
                     }}

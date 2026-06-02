@@ -1,6 +1,6 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
-import { Button, Platform } from "react-native";
+import { Platform, Text, TouchableOpacity } from "react-native";
 
 export default function TimePickerExample({ value,
   onChange }) {
@@ -24,11 +24,17 @@ export default function TimePickerExample({ value,
   if (Platform.OS === "android") {
     return (
       <>
-        <Button
-        className="bg-black/50 backdrop-blur-3xl"
-          title={value.toLocaleTimeString()}
+        <TouchableOpacity
           onPress={() => setShow(true)}
-        />
+          className="bg-gray-500/30 flex items-center justify-center  backdrop-blur-3xl px-6 py-3 rounded-2xl"
+        >
+          <Text className="text-white font-semibold">
+             {value.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })}
+          </Text> 
+        </TouchableOpacity>
 
         {show && (
           <DateTimePicker
