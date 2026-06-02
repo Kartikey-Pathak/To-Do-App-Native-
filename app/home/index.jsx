@@ -275,9 +275,100 @@ export default function page() {
                     }}
                 />
 
-                : <View className="h-48 w-80 bg-gray-500"></View>
+                : 
+                  <FlatList
 
-            }
+                    data={filteredTasks}
+                    vertical
+                    keyExtractor={item => item.id}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingVertical: 20, gap: 50, alignItems: "center" }}
+
+                    renderItem={({ item }) => {
+
+                        return (
+
+                            <MotiView
+                                from={{
+                                    opacity: 0,
+                                    translateY: 30,
+
+                                }}
+                                animate={{
+                                    opacity: 1,
+                                    translateY: 0,
+                                }}
+                                transition={{
+                                    type: "timing",
+                                    duration: 250,
+                                }}
+
+                            >
+                                <GlassView style={{ height: 190, width: 350, marginTop: 20, borderRadius: 40, display: 'flex', flexDirection: 'column' }} >
+                                    <View className="h-full w-full flex flex-col p-10">
+                                        <TextInput
+                                            className="w-full h-28 font-semibold text-white text-3xl"
+                                            multiline={true}
+
+                                            onChangeText={(text) => {
+                                                settasks(prev =>
+                                                    prev.map(task =>
+                                                        task.id === item.id ? { ...task, title: text } : task
+                                                    )
+                                                )
+
+                                            }}
+                                            value={item.title}
+                                        />
+
+
+                                        <View className=" flex flex-row justify-between items-center">
+                                            <TouchableOpacity className=" w-12" onPress={() => {
+                                                Haptics.selectionAsync(); settasks(prev =>
+                                                    prev.filter(task => task.id !== item.id)
+                                                );
+                                            }}>
+                                                <Ionicons size={40} name='remove-circle-outline' className="text-red-600" />
+                                            </TouchableOpacity>
+                                            {/* <Text className=" font-semibold text-white text-3xl">{item.title}</Text> */}
+
+
+                                            <TimePickerExample value={item.reminderTime}
+                                                onChange={async (date) => {
+                                                    settasks(prev =>
+                                                        prev.map(task =>
+                                                            task.id === item.id
+                                                                ? { ...task, reminderTime: date }
+                                                                : task
+                                                        )
+                                                    );
+                                                    const notificationDate = new Date(activedate);
+
+                                                    notificationDate.setHours(
+                                                        date.getHours()
+                                                    );
+
+                                                    notificationDate.setMinutes(
+                                                        date.getMinutes()
+                                                    );
+
+                                                    notificationDate.setSeconds(0);
+
+                                                    await scheduleTaskNotification(
+                                                        item.title,
+                                                        notificationDate
+                                                    );
+                                                }}
+                                            />
+                                        </View>
+
+                                    </View>
+                                </GlassView></MotiView>
+                        )
+
+                    }}
+                />
+                }
 
 
 
