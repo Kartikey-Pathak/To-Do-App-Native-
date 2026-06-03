@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GlassView } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import * as Notifications from 'expo-notifications';
@@ -19,13 +20,65 @@ Notifications.setNotificationHandler({
 });
 
 export default function page() {
-     const toast = useToast();
+    const toast = useToast();
     const [selectedTime, setSelectedTime] = useState(new Date());  //for the notification...
 
     const [notify, setnotify] = useState(true);
     const [activedate, setactivedate] = useState(new Date());
     const [tasks, settasks] = useState([]);
     const [texts, settexts] = useState("");
+
+    const [isLoaded, setIsLoaded] = useState(false); //For Local Storage 
+
+
+    //Retrieving From Local...
+    useEffect(() => {
+        const loadTasks = async () => {
+            try {
+                const savedTasks = await AsyncStorage.getItem("tasks");
+
+                if (savedTasks) {
+                    const parsedTasks = JSON.parse(savedTasks);
+
+                    // Convert reminderTime strings back to Date objects
+                    const formattedTasks = parsedTasks.map(task => ({
+                        ...task,
+                        reminderTime: new Date(task.reminderTime),
+                    }));
+
+                    settasks(formattedTasks);
+                }
+            } catch (error) {
+                console.log("Error loading tasks:", error);
+            } finally {
+                setIsLoaded(true);
+            }
+        };
+
+        loadTasks();
+    }, []);
+
+    //saving to local storage 
+    useEffect(() => {
+        if (!isLoaded) return;
+
+        const saveTasks = async () => {
+            try {
+                await AsyncStorage.setItem(
+                    "tasks",
+                    JSON.stringify(tasks)
+                );
+            } catch (error) {
+                console.log("Error saving tasks:", error);
+            } finally {
+                console.log("saved ")
+            }
+        };
+
+        saveTasks();
+    }, [tasks,isLoaded]);
+
+
 
     //Permission For Notifications...
     useEffect(() => {
@@ -101,7 +154,7 @@ export default function page() {
     return (
         <View className=" flex-1 w-full pt-20 bg-black">
             <View className="relative w-full  flex flex-row items-center justify-center">
-                
+
 
                 <MotiText
                     from={{
@@ -124,7 +177,7 @@ export default function page() {
 
                     setnotify(newNotify);
 
-                   toast.show(newNotify?"Notifications On":"Notifications Off");
+                    toast.show(newNotify ? "Notifications On" : "Notifications Off");
                 }} className=" absolute right-5">
                     <MotiText
                         from={{
@@ -275,8 +328,8 @@ export default function page() {
                     }}
                 />
 
-                : 
-                  <FlatList
+                :
+                <FlatList
 
                     data={filteredTasks}
                     vertical
@@ -304,7 +357,7 @@ export default function page() {
                                 }}
 
                             >
-                                <View className="h-[190px] w-[350px] mt-5 rounded-4xl flex flex-col bg-[#393E46]/30 backdrop-blur-3xl "  >
+                                <View className="h-[190px] md:w-[390px] w-[350px] mt-5 rounded-4xl flex flex-col bg-[#393E46]/30 backdrop-blur-3xl "  >
                                     <View className="h-full w-full flex flex-col px-10 py-5">
                                         <TextInput
                                             className="w-full h-28 font-semibold text-white text-3xl"
@@ -368,7 +421,7 @@ export default function page() {
 
                     }}
                 />
-                }
+            }
 
 
 

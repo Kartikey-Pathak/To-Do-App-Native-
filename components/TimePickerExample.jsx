@@ -29,11 +29,11 @@ export default function TimePickerExample({ value,
           className="bg-gray-500/30 flex items-center justify-center  backdrop-blur-3xl px-6 py-3 rounded-2xl"
         >
           <Text className="text-white font-semibold">
-             {value.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  })}
-          </Text> 
+            {value.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Text>
         </TouchableOpacity>
 
         {show && (
