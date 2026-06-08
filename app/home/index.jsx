@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GlassView } from 'expo-glass-effect';
+
 import * as Haptics from 'expo-haptics';
 import * as Notifications from 'expo-notifications';
 import { MotiText, MotiView } from "moti";
 import { useEffect, useMemo, useState } from 'react';
-import { FlatList, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { useToast } from "react-native-toast-notifications";
 import TimePickerExample from "../../components/TimePickerExample";
@@ -76,7 +76,7 @@ export default function page() {
         };
 
         saveTasks();
-    }, [tasks,isLoaded]);
+    }, [tasks, isLoaded]);
 
 
 
@@ -263,8 +263,10 @@ export default function page() {
                                 }}
 
                             >
-                                <GlassView style={{ height: 190, width: 350, marginTop: 20, borderRadius: 40, display: 'flex', flexDirection: 'column' }} >
+                                <View className="bg-[#393E46]/30 backdrop-blur-3xl " style={{ height: 190, width: 350, marginTop: 20, borderRadius: 40, display: 'flex', flexDirection: 'column' }} >
                                     <View className="h-full w-full flex flex-col p-10">
+                                       <KeyboardAvoidingView   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  style={{ flex: 1 }}>
                                         <TextInput
                                             className="w-full h-28 font-semibold text-white text-3xl"
                                             multiline={true}
@@ -278,7 +280,7 @@ export default function page() {
 
                                             }}
                                             value={item.title}
-                                        />
+                                        /></KeyboardAvoidingView>
 
 
                                         <View className=" flex flex-row justify-between items-center">
@@ -322,7 +324,7 @@ export default function page() {
                                         </View>
 
                                     </View>
-                                </GlassView></MotiView>
+                                </View></MotiView>
                         )
 
                     }}
